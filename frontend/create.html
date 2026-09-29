@@ -1,0 +1,18 @@
+<input type="text" id="myinput">
+<button onclick="send()">Sumbit</button>
+<script>
+    function send(){
+        let inputele = document.getElementById("myinput").value
+       
+        let userobj = {
+            name : inputele
+        }
+        fetch("http://localhost:4009/class",{
+            method:"POST",
+            headers : {
+                "Content-Type":"application/json",
+                },
+                body: JSON.stringify(userobj)
+        }).then(res => res.json()).then(info => console.log(info))
+        }
+</script>

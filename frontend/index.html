@@ -1,0 +1,71 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<div id="outer">
+
+</div>
+<table border="2px" class="table table-hover table-striped-columns">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+
+<script>
+    let bodyele = document.getElementById("tbody")
+    fetch("http://localhost:4009/college").then(res => res.json()).then(data => {
+        data.map(info => {
+
+            let rowele = document.createElement("tr")
+            let dataele = document.createElement("td")
+            let btnele = document.createElement("td")
+
+            btnele.innerHTML = `<button>Edit</button>`;
+            btnele.addEventListener("click",function(){
+                editData(info.name,info.id)
+            })
+            dataele.innerHTML = info.name
+
+
+            rowele.append(dataele)
+            rowele.append(btnele)
+            bodyele.append(rowele)
+
+
+        })
+     })
+     function editData(dataName,dataId) {
+       let inputele = document.createElement("input")
+       let btnele = document.createElement("button")
+       btnele.innerText = "Update"
+       inputele.setAttribute("value",dataName)
+        inputele.setAttribute("id","inputValue")
+
+       btnele.addEventListener("click",function(){
+        let inputVal = document.getElementById("inputValue").value
+        console.log(inputVal);
+        
+        let obj = {name:inputVal}
+        fetch(`http://localhost:4009/axixa/${dataId}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type" : "application/json"
+            },
+            body:JSON.stringify(obj)
+        }).then(res => res.json()).then(data => console.log(data)
+        )
+       })
+        console.log(inputele);
+        console.log(btnele);
+
+        
+
+        document.getElementById("outer").append(inputele)
+        document.getElementById("outer").append(btnele)
+
+        
+    }
+</script>
